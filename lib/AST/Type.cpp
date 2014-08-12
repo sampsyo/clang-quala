@@ -1902,6 +1902,7 @@ bool AttributedType::isCallingConv() const {
   case attr_objc_gc:
   case attr_objc_ownership:
   case attr_noreturn:
+  case attr_annotate:
       return false;
   case attr_pcs:
   case attr_pcs_vfp:
