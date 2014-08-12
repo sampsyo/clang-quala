@@ -1198,9 +1198,7 @@ void TypePrinter::printAttributedAfter(const AttributedType *T,
   }
 
   case AttributedType::attr_annotate: {
-    OS << "[[annotate(";
     OS << "@quala FIXME";
-    OS << ")]]";
     break;
   }
 

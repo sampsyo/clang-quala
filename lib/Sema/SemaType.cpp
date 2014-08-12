@@ -4929,9 +4929,11 @@ static void processTypeAttrs(TypeProcessingState &state, QualType &type,
       attr.setUsedAsTypeAttr();
       break;
     case AttributeList::AT_TypeAnnotate:
+      llvm::errs() << "@quala FIXME: ";
+      type.dump();
       type = state.getSema().Context.getAttributedType(
               AttributedType::attr_annotate, type, type);
-      llvm::errs() << "@quala FIXME\n";
+      type.dump();
       attr.setUsedAsTypeAttr();
       break;
     case AttributeList::AT_OpenCLImageAccess:

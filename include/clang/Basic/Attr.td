@@ -792,7 +792,7 @@ def NeonPolyVectorType : TypeAttr {
 }
 
 def TypeAnnotate : TypeAttr {
-  let Spellings = [CXX11<"clang", "type_annotate">];
+  let Spellings = [GNU<"type_annotate">];
   let Args = [StringArgument<"Annotation">];
   let Documentation = [Undocumented];
 }
