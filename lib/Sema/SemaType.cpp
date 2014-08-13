@@ -3401,8 +3401,6 @@ static AttributeList::Kind getAttrListKind(AttributedType::Kind kind) {
     return AttributeList::AT_NeonVectorType;
   case AttributedType::attr_neon_polyvector_type:
     return AttributeList::AT_NeonPolyVectorType;
-  case AttributedType::attr_annotate:
-    return AttributeList::AT_TypeAnnotate;
   case AttributedType::attr_objc_gc:
     return AttributeList::AT_ObjCGC;
   case AttributedType::attr_objc_ownership:

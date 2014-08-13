@@ -3396,10 +3396,9 @@ public:
     attr_vector_size,
     attr_neon_vector_type,
     attr_neon_polyvector_type,
-    attr_annotate,
 
     FirstExprOperandKind = attr_address_space,
-    LastExprOperandKind = attr_annotate,
+    LastExprOperandKind = attr_neon_polyvector_type,
 
     // Enumerated operand (string or keyword).
     attr_objc_gc,

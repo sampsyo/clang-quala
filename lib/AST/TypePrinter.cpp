@@ -1207,11 +1207,6 @@ void TypePrinter::printAttributedAfter(const AttributedType *T,
     break;
   }
 
-  case AttributedType::attr_annotate: {
-    OS << "@quala FIXME";
-    break;
-  }
-
   case AttributedType::attr_objc_gc: {
     OS << "objc_gc(";
 
