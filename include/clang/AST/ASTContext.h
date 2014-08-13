@@ -118,6 +118,7 @@ class ASTContext : public RefCountedBase<ASTContext> {
   mutable llvm::FoldingSet<ObjCObjectPointerType> ObjCObjectPointerTypes;
   mutable llvm::FoldingSet<AutoType> AutoTypes;
   mutable llvm::FoldingSet<AtomicType> AtomicTypes;
+  mutable llvm::FoldingSet<AnnotatedType> AnnotatedTypes;
   llvm::FoldingSet<AttributedType> AttributedTypes;
 
   mutable llvm::FoldingSet<QualifiedTemplateName> QualifiedTemplateNames;
@@ -945,6 +946,10 @@ public:
   /// \brief Return the uniqued reference to the atomic type for the specified
   /// type.
   QualType getAtomicType(QualType T) const;
+
+  /// \brief Return the uniqued reference to the annotated type for the
+  /// specified base type and annotation.
+  QualType getAnnotatedType(QualType T, StringRef A) const;
 
   /// \brief Return the uniqued reference to the type for a block of the
   /// specified type.

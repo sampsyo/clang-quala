@@ -5502,6 +5502,16 @@ QualType ASTReader::readTypeRecord(unsigned Index) {
     QualType ValueType = readType(*Loc.F, Record, Idx);
     return Context.getAtomicType(ValueType);
   }
+
+  case TYPE_ANNOTATED: {
+    if (Record.size() != 2) {
+      Error("incorrect encoding of annotated type");
+      return QualType();
+    }
+    QualType BaseType = readType(*Loc.F, Record, Idx);
+    std::string Annotation = ReadString(Record, Idx);
+    return Context.getAnnotatedType(BaseType, Annotation);
+  }
   }
   llvm_unreachable("Invalid TypeCode!");
 }
@@ -5770,6 +5780,9 @@ void TypeLocReader::VisitAtomicTypeLoc(AtomicTypeLoc TL) {
   TL.setKWLoc(ReadSourceLocation(Record, Idx));
   TL.setLParenLoc(ReadSourceLocation(Record, Idx));
   TL.setRParenLoc(ReadSourceLocation(Record, Idx));
+}
+void TypeLocReader::VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
+  // @quala FIXME location
 }
 
 TypeSourceInfo *ASTReader::GetTypeSourceInfo(ModuleFile &F,

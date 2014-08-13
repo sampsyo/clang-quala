@@ -2181,6 +2181,7 @@ llvm::DIType CGDebugInfo::CreateTypeNode(QualType Ty, llvm::DIFile Unit) {
   case Type::Decltype:
   case Type::UnaryTransform:
   case Type::PackExpansion:
+  case Type::Annotated:
     llvm_unreachable("type should have been unwrapped!");
   case Type::Auto:
     Diag = "auto";

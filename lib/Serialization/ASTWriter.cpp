@@ -426,6 +426,13 @@ ASTTypeWriter::VisitAtomicType(const AtomicType *T) {
   Code = TYPE_ATOMIC;
 }
 
+void
+ASTTypeWriter::VisitAnnotatedType(const AnnotatedType *T) {
+  Writer.AddTypeRef(T->getBaseType(), Record);
+  Writer.AddString(T->getAnnotation(), Record);
+  Code = TYPE_ANNOTATED;
+}
+
 namespace {
 
 class TypeLocWriter : public TypeLocVisitor<TypeLocWriter> {
@@ -647,6 +654,9 @@ void TypeLocWriter::VisitAtomicTypeLoc(AtomicTypeLoc TL) {
   Writer.AddSourceLocation(TL.getKWLoc(), Record);
   Writer.AddSourceLocation(TL.getLParenLoc(), Record);
   Writer.AddSourceLocation(TL.getRParenLoc(), Record);
+}
+void TypeLocWriter::VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
+  // @quala FIXME location
 }
 
 //===----------------------------------------------------------------------===//
@@ -921,6 +931,7 @@ void ASTWriter::WriteBlockInfoBlock() {
   RECORD(TYPE_ATTRIBUTED);
   RECORD(TYPE_SUBST_TEMPLATE_TYPE_PARM_PACK);
   RECORD(TYPE_ATOMIC);
+  RECORD(TYPE_ANNOTATED);
   RECORD(DECL_TYPEDEF);
   RECORD(DECL_ENUM);
   RECORD(DECL_RECORD);

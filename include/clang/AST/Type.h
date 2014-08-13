@@ -4623,6 +4623,37 @@ class AtomicType : public Type, public llvm::FoldingSetNode {
   }
 };
 
+class AnnotatedType : public Type, public llvm::FoldingSetNode {
+  QualType BaseType;
+  std::string Annotation;
+
+  AnnotatedType(QualType BaseTy, StringRef Ann, QualType Canonical)
+    : Type(Annotated, Canonical, BaseTy->isDependentType(),
+           BaseTy->isInstantiationDependentType(),
+           BaseTy->isVariablyModifiedType(),
+           BaseTy->containsUnexpandedParameterPack()),
+      BaseType(BaseTy), Annotation(Ann) {}
+  friend class ASTContext;  // ASTContext creates these.
+
+  public:
+  QualType getBaseType() const { return BaseType; }
+  StringRef getAnnotation() const { return Annotation; }
+
+  bool isSugared() const { return true; }
+  QualType desugar() const { return BaseType; }
+
+  void Profile(llvm::FoldingSetNodeID &ID) {
+    Profile(ID, getBaseType(), Annotation);
+  }
+  static void Profile(llvm::FoldingSetNodeID &ID, QualType T, StringRef S) {
+    ID.AddPointer(T.getAsOpaquePtr());
+    ID.AddString(S);
+  }
+  static bool classof(const Type *T) {
+    return T->getTypeClass() == Annotated;
+  }
+};
+
 /// A qualifier set is used to build a set of qualifiers.
 class QualifierCollector : public Qualifiers {
 public:

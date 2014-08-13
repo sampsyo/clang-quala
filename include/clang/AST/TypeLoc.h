@@ -1949,6 +1949,28 @@ public:
   }
 };
 
+struct AnnotatedTypeLocInfo {
+  // @quala FIXME
+};
+
+class AnnotatedTypeLoc : public ConcreteTypeLoc<UnqualTypeLoc,
+                                                AnnotatedTypeLoc,
+                                                AnnotatedType,
+                                                AnnotatedTypeLocInfo> {
+public:
+  TypeLoc getBaseLoc() const {
+    return this->getInnerTypeLoc();
+  }
+
+  void initializeLocal(ASTContext &Context, SourceLocation Loc) {
+    // @quala FIXME
+  }
+
+  QualType getInnerType() const {
+    return this->getTypePtr()->getBaseType();
+  }
+};
+
 
 }
 

@@ -12232,6 +12232,7 @@ bool Sema::tryCaptureVariable(VarDecl *Var, SourceLocation ExprLoc,
         case Type::Attributed:
         case Type::SubstTemplateTypeParm:
         case Type::PackExpansion:
+        case Type::Annotated:
           // Keep walking after single level desugaring.
           QTy = QTy.getSingleStepDesugaredType(getASTContext());
           break;
