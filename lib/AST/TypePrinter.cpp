@@ -850,7 +850,8 @@ void TypePrinter::printAtomicAfter(const AtomicType *T, raw_ostream &OS) { }
 
 void TypePrinter::printAnnotatedBefore(const AnnotatedType *T,
                                        raw_ostream &OS) {
-  OS << "@quala FIXME";
+  print(T->getBaseType(), OS, StringRef());
+  OS << " __attribute__((annotate_type(\"" << T->getAnnotation() << "\")))";
   spaceBeforePlaceHolder(OS);
 }
 void TypePrinter::printAnnotatedAfter(const AnnotatedType *T,
