@@ -3805,13 +3805,7 @@ QualType ASTContext::getAnnotatedType(QualType T, StringRef A) const {
   if (AnnotatedType *AT = AnnotatedTypes.FindNodeOrInsertPos(ID, InsertPos))
     return QualType(AT, 0);
 
-  QualType Canonical;
-  if (!T.isCanonical()) {
-    Canonical = getAnnotatedType(getCanonicalType(T), A);
-
-    AnnotatedType *NewIP = AnnotatedTypes.FindNodeOrInsertPos(ID, InsertPos);
-    assert(!NewIP && "Shouldn't be in the map!"); (void)NewIP;
-  }
+  QualType Canonical = getCanonicalType(T);
   AnnotatedType *New =
       new (*this, TypeAlignment) AnnotatedType(T, A, Canonical);
   Types.push_back(New);
