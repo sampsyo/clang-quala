@@ -656,7 +656,7 @@ void TypeLocWriter::VisitAtomicTypeLoc(AtomicTypeLoc TL) {
   Writer.AddSourceLocation(TL.getRParenLoc(), Record);
 }
 void TypeLocWriter::VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
-  // @quala FIXME location
+  Writer.AddSourceLocation(TL.getAnnotationLoc(), Record);
 }
 
 //===----------------------------------------------------------------------===//

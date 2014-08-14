@@ -3469,6 +3469,15 @@ static void fillAttributedTypeLoc(AttributedTypeLoc TL,
     TL.setAttrOperandParensRange(SourceRange());
 }
 
+static void fillAnnotatedTypeLoc(AnnotatedTypeLoc TL,
+                                 const AttributeList *attrs) {
+  assert(attrs->getNumArgs() == 1 && "must have argument");
+  Expr *expr = static_cast<Expr *>(attrs->getArgAsExpr(0));
+  StringLiteral *literal = dyn_cast<StringLiteral>(expr);
+  assert(literal && "argument must be string literal");
+  TL.setAnnotationLoc(literal->getLocStart());
+}
+
 namespace {
   class TypeSpecLocFiller : public TypeLocVisitor<TypeSpecLocFiller> {
     ASTContext &Context;
@@ -3641,9 +3650,8 @@ namespace {
       }
     }
     void VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
-      llvm::errs() << "@quala FIXME fill typespec loc\n";
+      fillAnnotatedTypeLoc(TL, DS.getAttributes().getList());
       Visit(TL.getBaseLoc());
-      TL.initialize(Context, DS.getTypeSpecTypeLoc());
     }
 
     void VisitTypeLoc(TypeLoc TL) {
@@ -3766,7 +3774,7 @@ namespace {
       TL.setRParenLoc(Chunk.EndLoc);
     }
     void VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
-      llvm::errs() << "@quala FIXME fill declarator loc\n";
+      fillAnnotatedTypeLoc(TL, Chunk.getAttrs());
     }
 
     void VisitTypeLoc(TypeLoc TL) {

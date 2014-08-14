@@ -5782,7 +5782,7 @@ void TypeLocReader::VisitAtomicTypeLoc(AtomicTypeLoc TL) {
   TL.setRParenLoc(ReadSourceLocation(Record, Idx));
 }
 void TypeLocReader::VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
-  // @quala FIXME location
+  TL.setAnnotationLoc(ReadSourceLocation(Record, Idx));
 }
 
 TypeSourceInfo *ASTReader::GetTypeSourceInfo(ModuleFile &F,

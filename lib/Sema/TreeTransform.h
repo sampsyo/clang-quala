@@ -4964,7 +4964,7 @@ QualType TreeTransform<Derived>::TransformAnnotatedType(TypeLocBuilder &TLB,
   }
 
   AnnotatedTypeLoc NewTL = TLB.push<AnnotatedTypeLoc>(Result);
-  // @quala FIXME set location
+  NewTL.setAnnotationLoc(TL.getAnnotationLoc());
 
   return Result;
 }

@@ -1950,7 +1950,7 @@ public:
 };
 
 struct AnnotatedTypeLocInfo {
-  // @quala FIXME
+  SourceLocation AnnotationLoc;
 };
 
 class AnnotatedTypeLoc : public ConcreteTypeLoc<UnqualTypeLoc,
@@ -1962,8 +1962,15 @@ public:
     return this->getInnerTypeLoc();
   }
 
+  SourceLocation getAnnotationLoc() const {
+    return this->getLocalData()->AnnotationLoc;
+  }
+  void setAnnotationLoc(SourceLocation Loc) {
+    this->getLocalData()->AnnotationLoc = Loc;
+  }
+
   void initializeLocal(ASTContext &Context, SourceLocation Loc) {
-    // @quala FIXME
+    setAnnotationLoc(Loc);
   }
 
   QualType getInnerType() const {
