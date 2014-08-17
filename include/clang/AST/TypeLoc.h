@@ -1969,6 +1969,10 @@ public:
     this->getLocalData()->AnnotationLoc = Loc;
   }
 
+  SourceRange getLocalSourceRange() const {
+    return SourceRange(getAnnotationLoc(), getAnnotationLoc());
+  }
+
   void initializeLocal(ASTContext &Context, SourceLocation Loc) {
     setAnnotationLoc(Loc);
   }
