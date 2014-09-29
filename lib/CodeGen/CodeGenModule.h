@@ -628,6 +628,7 @@ public:
 
   /// Experimental type annotation metadata.
   void TADecorate(llvm::Instruction *Inst, clang::QualType Ty);
+  void TADecorate(llvm::Value *V, clang::QualType Ty);
 
   /// Emit the given number of characters as a value of type size_t.
   llvm::ConstantInt *getSize(CharUnits numChars);

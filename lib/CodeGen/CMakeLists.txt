@@ -62,6 +62,7 @@ add_clang_library(clangCodeGen
   ModuleBuilder.cpp
   SanitizerBlacklist.cpp
   TargetInfo.cpp
+  CGTypeAnnotation.cpp
 
   DEPENDS
   intrinsics_gen

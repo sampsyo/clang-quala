@@ -3303,6 +3303,7 @@ Value *CodeGenFunction::EmitScalarExpr(const Expr *E, bool IgnoreResultAssign) {
     .Visit(const_cast<Expr*>(E));
   if (isa<CXXDefaultArgExpr>(E))
     enableDebugInfo();
+  CGM.TADecorate(V, E->getType());
   return V;
 }
 
