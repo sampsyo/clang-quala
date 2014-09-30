@@ -8,6 +8,9 @@ using namespace clang;
 using namespace clang::CodeGen;
 
 void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty) {
+  if (!Inst)
+    return;
+
   llvm::LLVMContext &Ctx = getLLVMContext();
 
   // Is this an annotated type?
@@ -27,6 +30,8 @@ void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty) {
 }
 
 void CodeGenModule::TADecorate(llvm::Value *V, clang::QualType Ty) {
+  if (!V)
+    return;
   if (auto *Inst = dyn_cast<llvm::Instruction>(V)) {
     TADecorate(Inst, Ty);
   } else {

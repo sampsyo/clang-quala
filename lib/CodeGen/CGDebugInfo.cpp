@@ -2016,6 +2016,9 @@ static QualType UnwrapTypeForDebugInfo(QualType T, const ASTContext &C) {
     case Type::SubstTemplateTypeParm:
       T = cast<SubstTemplateTypeParmType>(T)->getReplacementType();
       break;
+    case Type::Annotated:
+      T = cast<AnnotatedType>(T)->getBaseType();
+      break;
     case Type::Auto:
       QualType DT = cast<AutoType>(T)->getDeducedType();
       if (DT.isNull())
