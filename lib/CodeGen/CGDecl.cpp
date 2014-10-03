@@ -981,6 +981,8 @@ CodeGenFunction::EmitAutoVarAlloca(const VarDecl &D) {
   if (D.hasAttr<AnnotateAttr>())
       EmitVarAnnotations(&D, emission.Address);
 
+  CGM.TADecorate(emission.Address, Ty);
+
   return emission;
 }
 
