@@ -160,7 +160,9 @@ public:
   //===--------------------------------------------------------------------===//
 
   Value *Visit(Expr *E) {
-    return StmtVisitor<ScalarExprEmitter, Value*>::Visit(E);
+    Value *V = StmtVisitor<ScalarExprEmitter, Value*>::Visit(E);
+    CGF.CGM.TADecorate(V, E->getType());
+    return V;
   }
 
   Value *VisitStmt(Stmt *S) {
@@ -3303,7 +3305,6 @@ Value *CodeGenFunction::EmitScalarExpr(const Expr *E, bool IgnoreResultAssign) {
     .Visit(const_cast<Expr*>(E));
   if (isa<CXXDefaultArgExpr>(E))
     enableDebugInfo();
-  CGM.TADecorate(V, E->getType());
   return V;
 }
 
