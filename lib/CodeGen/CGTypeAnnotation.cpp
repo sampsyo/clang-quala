@@ -7,7 +7,8 @@
 using namespace clang;
 using namespace clang::CodeGen;
 
-void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty) {
+void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty,
+        uint8_t level) {
   if (!Inst)
     return;
 
@@ -18,10 +19,10 @@ void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty) {
   if (auto *AT = llvm::dyn_cast<AnnotatedType>(Ty)) {
     StringRef Ann = AT->getAnnotation();
 
-    // TODO record the "depth" of the annotation in the reference type chain.
+    // TODO add the "depth" of the annotation in the reference type chain.
     llvm::Value *Args[2] = {
       llvm::MDString::get(Ctx, Ann),
-      llvm::ConstantInt::get(llvm::Type::getInt8Ty(Ctx), 0, false)
+      llvm::ConstantInt::get(llvm::Type::getInt8Ty(Ctx), level, false)
     };
 
     llvm::MDNode *node = llvm::MDNode::get(Ctx, Args);
@@ -29,11 +30,12 @@ void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty) {
   }
 }
 
-void CodeGenModule::TADecorate(llvm::Value *V, clang::QualType Ty) {
+void CodeGenModule::TADecorate(llvm::Value *V, clang::QualType Ty,
+        uint8_t level) {
   if (!V)
     return;
   if (auto *Inst = dyn_cast<llvm::Instruction>(V)) {
-    TADecorate(Inst, Ty);
+    TADecorate(Inst, Ty, level);
   } else {
     // TODO maybe handle this case
   }

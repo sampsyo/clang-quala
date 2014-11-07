@@ -981,7 +981,7 @@ CodeGenFunction::EmitAutoVarAlloca(const VarDecl &D) {
   if (D.hasAttr<AnnotateAttr>())
       EmitVarAnnotations(&D, emission.Address);
 
-  CGM.TADecorate(emission.Address, Ty);
+  CGM.TADecorate(emission.Address, Ty, 1);  // Alloca type is a pointer to Ty.
 
   return emission;
 }
