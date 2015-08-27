@@ -1780,6 +1780,9 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
     }
   }
 
+  case Type::Annotated:
+    return getTypeInfo(cast<AnnotatedType>(T)->getBaseType().getTypePtr());
+
   }
 
   assert(llvm::isPowerOf2_32(Align) && "Alignment must be power of 2");
@@ -3967,6 +3970,24 @@ QualType ASTContext::getAtomicType(QualType T) const {
   AtomicType *New = new (*this, TypeAlignment) AtomicType(T, Canonical);
   Types.push_back(New);
   AtomicTypes.InsertNode(New, InsertPos);
+  return QualType(New, 0);
+}
+
+/// getAnnotatedType - Return the uniqued reference to the annotated type
+/// for a given base type and annotation.
+QualType ASTContext::getAnnotatedType(QualType T, StringRef A) const {
+  llvm::FoldingSetNodeID ID;
+  AnnotatedType::Profile(ID, T, A);
+
+  void *InsertPos = nullptr;
+  if (AnnotatedType *AT = AnnotatedTypes.FindNodeOrInsertPos(ID, InsertPos))
+    return QualType(AT, 0);
+
+  QualType Canonical = getCanonicalType(T);
+  AnnotatedType *New =
+      new (*this, TypeAlignment) AnnotatedType(T, A, Canonical);
+  Types.push_back(New);
+  AnnotatedTypes.InsertNode(New, InsertPos);
   return QualType(New, 0);
 }
 

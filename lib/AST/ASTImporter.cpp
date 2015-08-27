@@ -878,6 +878,14 @@ static bool IsStructurallyEquivalent(StructuralEquivalenceContext &Context,
     break;
   }
 
+   case Type::Annotated: {
+    if (!IsStructurallyEquivalent(Context,
+                                  cast<AnnotatedType>(T1)->getBaseType(),
+                                  cast<AnnotatedType>(T2)->getBaseType()))
+      return false;
+    break;
+  }
+
   } // end switch
 
   return true;

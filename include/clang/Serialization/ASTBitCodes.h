@@ -876,6 +876,8 @@ namespace clang {
       TYPE_DECAYED               = 41,
       /// \brief An AdjustedType record.
       TYPE_ADJUSTED              = 42
+       /// \brief An AnnotatedType record.
+      TYPE_ANNOTATED              = 43
     };
 
     /// \brief The type IDs for special types constructed by semantic

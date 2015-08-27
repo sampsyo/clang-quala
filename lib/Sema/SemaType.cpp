@@ -4486,6 +4486,15 @@ static void fillAttributedTypeLoc(AttributedTypeLoc TL,
     TL.setAttrOperandParensRange(SourceRange());
 }
 
+static void fillAnnotatedTypeLoc(AnnotatedTypeLoc TL,
+                                 const AttributeList *attrs) {
+  assert(attrs->getNumArgs() == 1 && "must have argument");
+  Expr *expr = static_cast<Expr *>(attrs->getArgAsExpr(0));
+  StringLiteral *literal = dyn_cast<StringLiteral>(expr);
+  assert(literal && "argument must be string literal");
+  TL.setAnnotationLoc(literal->getLocStart());
+}
+
 namespace {
   class TypeSpecLocFiller : public TypeLocVisitor<TypeSpecLocFiller> {
     ASTContext &Context;
@@ -4639,6 +4648,10 @@ namespace {
         Visit(TL.getValueLoc());
       }
     }
+    void VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
+      fillAnnotatedTypeLoc(TL, DS.getAttributes().getList());
+      Visit(TL.getBaseLoc());
+    }
 
     void VisitTypeLoc(TypeLoc TL) {
       // FIXME: add other typespec types and change this to an assert.
@@ -4759,6 +4772,9 @@ namespace {
       assert(Chunk.Kind == DeclaratorChunk::Paren);
       TL.setLParenLoc(Chunk.Loc);
       TL.setRParenLoc(Chunk.EndLoc);
+    }
+    void VisitAnnotatedTypeLoc(AnnotatedTypeLoc TL) {
+      fillAnnotatedTypeLoc(TL, Chunk.getAttrs());
     }
 
     void VisitTypeLoc(TypeLoc TL) {
@@ -6070,6 +6086,28 @@ static void HandleNeonVectorTypeAttr(QualType& CurType,
   CurType = S.Context.getVectorType(CurType, numElts, VecKind);
 }
 
+static void HandleTypeAnnotateAttr(QualType& CurType,
+                                   const AttributeList &Attr, Sema &S) {
+  if (Attr.getNumArgs() != 1) {
+    S.Diag(Attr.getLoc(), diag::err_attribute_wrong_number_arguments)
+      << Attr.getName() << 1;
+    Attr.setInvalid();
+    return;
+  }
+
+  Expr *expr = static_cast<Expr *>(Attr.getArgAsExpr(0));
+  StringLiteral *literal = dyn_cast<StringLiteral>(expr);
+  if (literal == 0 || literal->isWide()) {
+    S.Diag(Attr.getLoc(), diag::err_attribute_argument_type)
+      << Attr.getName() << AANT_ArgumentString
+      << expr->getSourceRange();
+    return;
+  }
+
+  CurType = S.Context.getAnnotatedType(CurType, literal->getString());
+}
+
+
 static void processTypeAttrs(TypeProcessingState &state, QualType &type,
                              TypeAttrLocation TAL, AttributeList *attrs) {
   // Scan through and apply attributes to this type where it makes sense.  Some
@@ -6161,6 +6199,10 @@ static void processTypeAttrs(TypeProcessingState &state, QualType &type,
     case AttributeList::AT_NeonPolyVectorType:
       HandleNeonVectorTypeAttr(type, attr, state.getSema(),
                                VectorType::NeonPolyVector);
+      attr.setUsedAsTypeAttr();
+      break;
+    case AttributeList::AT_TypeAnnotate:
+      HandleTypeAnnotateAttr(type, attr, state.getSema());
       attr.setUsedAsTypeAttr();
       break;
     case AttributeList::AT_OpenCLImageAccess:

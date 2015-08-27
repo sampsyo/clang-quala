@@ -1300,6 +1300,7 @@ void CodeGenFunction::EmitStoreOfScalar(llvm::Value *Value, llvm::Value *Addr,
     if (TBAAPath)
       CGM.DecorateInstruction(Store, TBAAPath, false/*ConvertTypeToTag*/);
   }
+  CGM.TADecorate(Store, Ty);
 }
 
 void CodeGenFunction::EmitStoreOfScalar(llvm::Value *value, LValue lvalue,

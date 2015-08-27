@@ -199,6 +199,7 @@ public:
   Value *Visit(Expr *E) {
     ApplyDebugLocation DL(CGF, E);
     return StmtVisitor<ScalarExprEmitter, Value*>::Visit(E);
+    CGF.CGM.TADecorate(V, E->getType());
   }
 
   Value *VisitStmt(Stmt *S) {

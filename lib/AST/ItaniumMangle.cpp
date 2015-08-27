@@ -1510,6 +1510,7 @@ bool CXXNameMangler::mangleUnresolvedTypeOrSimpleId(QualType Ty,
   case Type::ObjCInterface:
   case Type::ObjCObjectPointer:
   case Type::Atomic:
+  case Type::Annotated:
     llvm_unreachable("type is illegal as a nested name specifier");
 
   case Type::SubstTemplateTypeParmPack:

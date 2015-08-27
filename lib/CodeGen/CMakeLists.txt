@@ -75,6 +75,7 @@ add_clang_library(clangCodeGen
   ObjectFilePCHContainerOperations.cpp
   SanitizerMetadata.cpp
   TargetInfo.cpp
+  CGTypeAnnotation.cpp
 
   DEPENDS
   ${codegen_deps}

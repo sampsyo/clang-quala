@@ -855,6 +855,12 @@ def NeonPolyVectorType : TypeAttr {
   let Documentation = [Undocumented];
 }
 
+def TypeAnnotate : TypeAttr {
+  let Spellings = [GNU<"type_annotate">];
+  let Args = [StringArgument<"Annotation">];
+  let Documentation = [Undocumented];
+}
+
 def NeonVectorType : TypeAttr {
   let Spellings = [GNU<"neon_vector_type">];
   let Args = [IntArgument<"NumElements">];

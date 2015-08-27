@@ -224,6 +224,7 @@ bool TypePrinter::canPrefixQualifiers(const Type *T,
     case Type::Attributed:
     case Type::PackExpansion:
     case Type::SubstTemplateTypeParm:
+    case Type::Annotated:
       CanPrefixQualifiers = false;
       break;
   }
@@ -854,6 +855,15 @@ void TypePrinter::printAtomicBefore(const AtomicType *T, raw_ostream &OS) {
   spaceBeforePlaceHolder(OS);
 }
 void TypePrinter::printAtomicAfter(const AtomicType *T, raw_ostream &OS) { }
+
+void TypePrinter::printAnnotatedBefore(const AnnotatedType *T,
+                                       raw_ostream &OS) {
+  print(T->getBaseType(), OS, StringRef());
+  OS << " __attribute__((annotate_type(\"" << T->getAnnotation() << "\")))";
+  spaceBeforePlaceHolder(OS);
+}
+void TypePrinter::printAnnotatedAfter(const AnnotatedType *T,
+                                      raw_ostream &OS) { }
 
 /// Appends the given scope to the end of a string.
 void TypePrinter::AppendScope(DeclContext *DC, raw_ostream &OS) {
