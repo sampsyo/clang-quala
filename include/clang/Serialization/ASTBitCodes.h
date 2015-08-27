@@ -875,7 +875,7 @@ namespace clang {
       /// \brief A DecayedType record.
       TYPE_DECAYED               = 41,
       /// \brief An AdjustedType record.
-      TYPE_ADJUSTED              = 42
+      TYPE_ADJUSTED              = 42,
        /// \brief An AnnotatedType record.
       TYPE_ANNOTATED              = 43
     };
