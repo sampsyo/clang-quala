@@ -165,39 +165,6 @@ Static Analyzer
 * Various improvements to the retain count checker.
 
 
-SystemZ
--------
-
-* Clang will now always default to the z10 processor when compiling
-  without any ``-march=`` option. Previous releases used to automatically
-  detect the current host CPU when compiling natively. If you wish to
-  still have clang detect the current host CPU, you now need to use the
-  ``-march=native`` option.
-
-* Clang now provides the ``<s390intrin.h>`` header file.
-
-* Clang now supports the transactional-execution facility and
-  provides associated builtins and the ``<htmintrin.h>`` and
-  ``<htmxlintrin.h>`` header files. Support is enabled by default
-  on zEC12 and above, and can additionally be enabled or disabled
-  via the ``-mhtm`` / ``-mno-htm`` command line options.
-
-* Clang now supports the vector facility. This includes a
-  change in the ABI to pass arguments and return values of
-  vector types in vector registers, as well as a change in
-  the default alignment of vector types. Support is enabled
-  by default on z13 and above, and can additionally be enabled
-  or disabled via the ``-mvx`` / ``-mno-vx`` command line options.
-
-* Clang now supports the System z vector language extension,
-  providing a "vector" keyword to define vector types, and a
-  set of builtins defined in the ``<vecintrin.h>`` header file.
-  This can be enabled via the ``-fzvector`` command line option.
-  For compatibility with GCC, Clang also supports the
-  ``-mzvector`` option as an alias.
- 
-* Several cases of ABI incompatibility with GCC have been fixed.
-
 clang-tidy
 ----------
 Added new checks:
@@ -247,6 +214,46 @@ Added new checks:
   boolean constants and simplifies them to use the appropriate boolean
   expression directly (``if (x == true) ... -> if (x)``, etc.)
 
+SystemZ
+-------
+
+* Clang will now always default to the z10 processor when compiling
+  without any ``-march=`` option. Previous releases used to automatically
+  detect the current host CPU when compiling natively. If you wish to
+  still have clang detect the current host CPU, you now need to use the
+  ``-march=native`` option.
+
+* Clang now provides the ``<s390intrin.h>`` header file.
+
+* Clang now supports the transactional-execution facility and
+  provides associated builtins and the ``<htmintrin.h>`` and
+  ``<htmxlintrin.h>`` header files. Support is enabled by default
+  on zEC12 and above, and can additionally be enabled or disabled
+  via the ``-mhtm`` / ``-mno-htm`` command line options.
+
+* Clang now supports the vector facility. This includes a
+  change in the ABI to pass arguments and return values of
+  vector types in vector registers, as well as a change in
+  the default alignment of vector types. Support is enabled
+  by default on z13 and above, and can additionally be enabled
+  or disabled via the ``-mvx`` / ``-mno-vx`` command line options.
+
+* Clang now supports the System z vector language extension,
+  providing a "vector" keyword to define vector types, and a
+  set of builtins defined in the ``<vecintrin.h>`` header file.
+  This can be enabled via the ``-fzvector`` command line option.
+  For compatibility with GCC, Clang also supports the
+  ``-mzvector`` option as an alias.
+ 
+* Several cases of ABI incompatibility with GCC have been fixed.
+
+
+Last release which will run on Windows XP and Windows Vista
+-----------------------------------------------------------
+
+This is expected to the be the last major release of Clang that will support
+running on Windows XP and Windows Vista.  For the next major release the
+minimum Windows version requirement will be Windows 7.
 
 Additional Information
 ======================
