@@ -20,11 +20,10 @@ void CodeGenModule::TADecorate(llvm::Instruction *Inst, clang::QualType Ty,
     StringRef Ann = AT->getAnnotation();
 
     // TODO add the "depth" of the annotation in the reference type chain.
-    //llvm::Value *Args[2] = {
-    llvm::Metadata *Args[2] = {  
+    llvm::Metadata *Args[2] = {
     llvm::MDString::get(Ctx, Ann),
-       llvm::ConstantAsMetadata::get(llvm::ConstantInt::get(llvm::Type::getInt8Ty(Ctx), level, false))
-       //llvm::ConstantInt::get(llvm::Type::getInt8Ty(Ctx), level, false)
+       llvm::ConstantAsMetadata::get(llvm::ConstantInt::get(
+           llvm::Type::getInt8Ty(Ctx), level, false))
     };
 
     llvm::MDNode *node = llvm::MDNode::get(Ctx, Args);
